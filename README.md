@@ -29,9 +29,14 @@ Add `--zap` to remove preferences too. Removal backups in `~/Library/Application
 
 ## Maintenance
 
-[Upstream PR #9](https://github.com/iAmCorey/birth/pull/9) includes a GitHub Actions workflow that updates this tap on stable releases. Once merged, publishing requires an upstream Actions secret named `HOMEBREW_TAP_TOKEN`: a fine-grained token with **Contents: read and write** access only to `le0-VV/homebrew-birth`. The workflow downloads the latest stable DMG, checks its SHA-256 against GitHub's asset digest, updates the cask, runs Homebrew style and online audit checks, and pushes only when the cask changes. Its manual **Run workflow** action retries the latest release if the DMG was uploaded after publication.
+[Upstream PR #9](https://github.com/iAmCorey/birth/pull/9) makes the upstream project itself a Homebrew tap and adds release automation using its own automatic GitHub token. It does not update this separate community tap or require access to it. Once merged, the upstream installation commands will be:
 
-Until the upstream workflow is merged and configured, update `version` and `sha256` in `Casks/birth.rb` manually for each stable [upstream release](https://github.com/iAmCorey/birth/releases). Download the official DMG and calculate its checksum with `shasum -a 256` before committing.
+```bash
+brew tap iAmCorey/birth https://github.com/iAmCorey/birth.git
+brew install --cask iAmCorey/birth/birth
+```
+
+This community tap remains manually maintained. Update `version` and `sha256` in `Casks/birth.rb` for each stable [upstream release](https://github.com/iAmCorey/birth/releases). Download the official DMG and calculate its checksum with `shasum -a 256` before committing.
 
 Validate changes with:
 
